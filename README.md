@@ -1,97 +1,71 @@
 # ROS2 Humble NVIDIA Docker Template
 
-> A ready-to-use Docker development environment for ROS2 Humble with full NVIDIA GPU acceleration, Gazebo simulation, RViz2 visualization, and TurtleBot3 support.
+A Docker setup for ROS2 Humble with NVIDIA GPU support, Gazebo, RViz2, and TurtleBot3. The goal is to get a working ROS2 environment running with minimal effort.
 
----
+## What's Inside
 
-## Overview
+- ROS2 Humble Hawksbill
+- NVIDIA GPU support via Container Toolkit
+- Gazebo simulation
+- RViz2
+- TurtleBot3 (Burger)
+- A basic publisher/subscriber package (`pubsub_pkg`) to test things out
+- Mounted workspace so edits on your host show up in the container immediately
 
-This template gives you a fully configured ROS2 Humble workspace inside Docker — no manual ROS installation needed. GPU passthrough is handled automatically via the NVIDIA Container Toolkit, and your local workspace is mounted into the container so you can edit files with your preferred editor on the host and see changes reflected instantly.
+## Requirements
 
-**Included out of the box:**
-
-| Feature | Details |
-|---|---|
-| ROS2 Distribution | Humble Hawksbill |
-| GPU Support | NVIDIA via Container Toolkit |
-| Simulation | Gazebo |
-| Visualization | RViz2 |
-| Robot Model | TurtleBot3 (Burger) |
-| Example Package | Publisher / Subscriber (`pubsub_pkg`) |
-| Workspace Mount | `./ros2_ws` ↔ `/ros2_ws` |
-
----
-
-## Prerequisites
-
-Ensure the following are installed and configured on your host machine before proceeding:
+You need these installed on your machine before starting:
 
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - NVIDIA GPU drivers
 - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-- Linux desktop environment (required for GUI applications)
+- Linux with a desktop (needed for Gazebo and RViz2)
 
----
+## Renaming the Project
 
-## Renaming This Project
+When using this template on GitHub, just name your repo whatever makes sense for your project. After cloning, if you want to rename the container too, open `docker-compose.yml` and change the `container_name` and image name fields.
 
-When you create a repository from this template on GitHub, you can give it any name you like — for example:
+## Setup
 
-```
-my-ros2-project
-robotics-lab
-ros2-dev-workspace
-```
+**1. Use this template on GitHub**
 
-If you also want to rename the Docker container and image, open `docker-compose.yml` and update the `container_name` and image fields to match your project name. This keeps things consistent across your codebase.
+Click "Use this template" and create your own repo.
 
----
-
-## Getting Started
-
-### 1. Create your repository
-
-On GitHub, click **"Use this template"** → **"Create a new repository"** and fill in your project name.
-
-### 2. Clone your repository
+**2. Clone it**
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 cd YOUR_REPO_NAME
 ```
 
-### 3. Allow GUI forwarding
-
-Run this command after every login or reboot (required for Gazebo, RViz2):
+**3. Allow GUI apps (do this after every login)**
 
 ```bash
 xhost +local:docker
 ```
 
-### 4. Build the Docker image
+**4. Build the image**
 
 ```bash
 docker compose build
 ```
 
-### 5. Start the container
+**5. Start the container**
 
 ```bash
 docker compose up -d
 ```
 
-### 6. Enter the container
+**6. Enter the container**
 
 ```bash
 docker exec -it ros2_ws_container bash
 ```
 
----
+## Build the Workspace
 
-## Building the Workspace
-
-Inside the container, run:
+Inside the container:
 
 ```bash
 cd /ros2_ws
@@ -99,26 +73,22 @@ colcon build
 source install/setup.bash
 ```
 
----
+## Run the Example Nodes
 
-## Running the Example Package
-
-Start the publisher in one terminal:
+Terminal 1:
 
 ```bash
 ros2 run pubsub_pkg publisher
 ```
 
-Open a second terminal and attach to the container:
+Terminal 2:
 
 ```bash
 docker exec -it ros2_ws_container bash
 ros2 run pubsub_pkg subscriber
 ```
 
----
-
-## Launching Simulation Tools
+## Simulation
 
 **Gazebo:**
 
@@ -134,7 +104,7 @@ docker exec -it ros2_ws_container bash
 rviz2
 ```
 
-**TurtleBot3 in Gazebo:**
+**TurtleBot3:**
 
 ```bash
 docker exec -it ros2_ws_container bash
@@ -142,40 +112,24 @@ export TURTLEBOT3_MODEL=burger
 ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
 ```
 
----
+## Daily Use
 
-## Common Commands
-
-| Action | Command |
-|---|---|
-| Start container | `docker compose up -d` |
-| Enter container | `docker exec -it ros2_ws_container bash` |
-| Stop container | `docker compose down` |
-| Rebuild image | `docker compose build` |
-
----
-
-## Pushing Changes to GitHub
-
-After making changes to your project:
-
+Start:
 ```bash
-git add .
-git commit -m "your commit message"
-git push
+docker compose up -d
 ```
 
-**First-time push on a new repository:**
-
+Enter:
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-git branch -M main
-git push -u origin main
+docker exec -it ros2_ws_container bash
 ```
 
----
+Stop:
+```bash
+docker compose down
+```
 
-## Workspace Structure
+## Project Structure
 
 ```
 ros2-humble-nvidia-docker-template/
@@ -187,14 +141,24 @@ ros2-humble-nvidia-docker-template/
 └── README.md
 ```
 
-Files edited on your **host** at `./ros2_ws` are immediately available inside the container at `/ros2_ws` — no rebuild required.
+The `ros2_ws` folder is mounted, so any file you edit on your host is live inside the container without rebuilding.
 
----
+## Pushing to GitHub
+
+```bash
+git add .
+git commit -m "your message here"
+git push
+```
+
+First push on a fresh repo:
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git branch -M main
+git push -u origin main
+```
 
 ## Author
 
-**Vignesh Suresh**
-
----
-
-*Built on ROS2 Humble · Dockerized · GPU-ready*
+Vignesh Suresh
