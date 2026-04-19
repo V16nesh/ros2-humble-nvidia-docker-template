@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  ros2:
+    build: .
+    container_name: ros2_ws_container
+    stdin_open: true
+    tty: true
+
+    runtime: nvidia
+    network_mode: host
+    ipc: host
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_DOMAIN_ID=0
+      - TURTLEBOT3_MODEL=burger
+      - ALSOFT_DRIVERS=null
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./ros2_ws:/ros2_ws
+      - ./config/my_bashrc:/root/.bashrc
+
+    working_dir: /ros2_ws
+    command: bash

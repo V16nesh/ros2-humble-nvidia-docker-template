@@ -1,0 +1,10 @@
+export v16_logo="🐧⚙️ |"
+PS1="${v16_logo} \[\033[1;36m\]\h \[\033[1;34m\]\W \[\033[1;36m\]# \[\033[0m\]"
+
+source /opt/ros/humble/setup.bash
+[ -f /ros2_ws/install/setup.bash ] && source /ros2_ws/install/setup.bash
+[ -f /usr/share/gazebo/setup.sh ] && source /usr/share/gazebo/setup.sh
+
+export HISTSIZE=10000
+shopt -s histappend
+PROMPT_COMMAND='history -a'
