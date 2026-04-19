@@ -154,25 +154,6 @@ docker compose down
 
 ---
 
-## Saving your work to GitHub
-
-After making changes:
-
-```bash
-git add .
-git commit -m "describe what you changed"
-git push
-```
-
-If it's your first push on a new repo:
-
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-git branch -M main
-git push -u origin main
-```
-
----
 
 ## Notes
 
